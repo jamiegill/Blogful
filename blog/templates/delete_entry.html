@@ -1,0 +1,29 @@
+{% import "macros.html" as macros %}
+{% extends "base.html" %}
+
+{% block content %}
+<h1>
+    Delete Entry
+</h1>
+
+<p>
+    Are you sure you want to delete the entry below?
+</p>
+
+{% for entry in entries %}
+{{ macros.render_entry(entry) }}
+{% endfor %}
+
+
+<p> Click "Yes" to Delete or "No" to Cancel</p>
+<form role="form" method="POST">
+    <button type="submit" class="button_align">Yes</button>
+</form>
+<form action="{{ url_for('entries') }}">
+    <button type="submit" class="button_align">No</button>
+</form>
+{% endblock %}
+
+
+
+

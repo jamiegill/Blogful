@@ -9,14 +9,22 @@
 <ul class="pager">
     {% if has_next %}
     <li class="previous" >
-    <a href="{{ url_for('entries',page=page + 1) }}">&larr; Older</a>
+    <a href="{{ url_for('entries',page=page + 1, paginate_by=paginate_by) }}">&larr; Older</a>
     </li>
     {% endif %}
     {% if has_prev %}
     <li class="next">
-    <a href="{{ url_for('entries', page=page -1) }}">&rarr; Newer</a>
+    <a href="{{ url_for('entries', page=page -1, paginate_by=paginate_by) }}">&rarr; Newer</a>
     </li>
     {% endif %}
 </ul>
+<div class="page_entries">
+    Entries per page:
+    <a class="navbar-brand" href="{{ url_for('entries', page=page -1, paginate_by=5) }}">5</a>
+    <a class="navbar-brand" href="{{ url_for('entries', page=page -1, paginate_by=10) }}">10</a>
+    <a class="navbar-brand" href="{{ url_for('entries', page=page -1, paginate_by=15) }}">15</a>
+    <a class="navbar-brand" href="{{ url_for('entries', page=page -1, paginate_by=20) }}">20</a>
+    <a class="navbar-brand" href="{{ url_for('entries', page=page -1, paginate_by=25) }}">25</a>
+    </div
 
 {% endblock %}
