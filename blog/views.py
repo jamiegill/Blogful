@@ -1,7 +1,9 @@
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, flash
+from flask_login import login_user, login_required, current_user, logout_user
+from werkzeug.security import check_password_hash
 import datetime
 from . import app
-from .database import session, Entry
+from .database import session, Entry, User
 
 @app.route("/")
 @app.route("/page/<int:page>")
@@ -44,20 +46,24 @@ def single_entry(id):
     
     
 @app.route("/entry/add", methods=["GET"])
+@login_required
 def add_entry_get():
     return render_template("add_entry.html")
     
 @app.route("/entry/add", methods=["POST"])
+@login_required
 def add_entry_post():
     entry = Entry(
         title=request.form["title"],
         content=request.form["content"],
+        author=current_user
     )
     session.add(entry)
     session.commit()
     return redirect(url_for("entries"))
     
 @app.route("/entry/<int:id>/edit", methods=["GET"])
+@login_required
 def edit_entry_get(id):
     entries = session.query(Entry).filter_by(id=id)
     return render_template("edit_entry.html",
@@ -65,16 +71,23 @@ def edit_entry_get(id):
     )
     
 @app.route("/entry/<int:id>/edit", methods=["POST"])
+@login_required
 def edit_entry_post(id):
-    title=request.form["title"],
-    content=request.form["content"]
-    update_record = session.query(Entry).filter_by(id=id).first()
-    update_record.title = title
-    update_record.content = content
-    session.commit()
-    return redirect(url_for("edit_entry_post", id=id))
+    current_entry_id = session.query(User.id).join(Entry).filter(Entry.id==id).first()[0]
+    if current_entry_id != current_user.id:
+        flash ("You didn't create this post so you cannot edit/delete the post", "danger")
+        return redirect(url_for("edit_entry_post", id=id))
+    else:
+        title=request.form["title"],
+        content=request.form["content"]
+        update_record = session.query(Entry).filter_by(id=id).first()
+        update_record.title = title
+        update_record.content = content
+        session.commit()
+        return redirect(url_for("edit_entry_post", id=id))
 
 @app.route("/entry/<int:id>/delete", methods=["GET"])
+@login_required
 def delete_entry_get(id):
     entries = session.query(Entry).filter_by(id=id)
     return render_template("delete_entry.html",
@@ -82,8 +95,36 @@ def delete_entry_get(id):
     )
 
 @app.route("/entry/<int:id>/delete", methods=["POST"])
+@login_required
 def delete_entry_post(id):
-    delete_record = session.query(Entry).filter_by(id=id).first()
-    session.delete(delete_record)
-    session.commit()
+    current_entry_id = session.query(User.id).join(Entry).filter(Entry.id==id).first()[0]
+    if current_entry_id != current_user.id:
+        flash ("You didn't create this post so you cannot edit/delete the post", "danger")
+        return redirect(url_for("edit_entry_post", id=id))
+    else:
+        delete_record = session.query(Entry).filter_by(id=id).first()
+        session.delete(delete_record)
+        session.commit()
+        return redirect(url_for("entries"))
+    
+@app.route("/login", methods=['GET'])
+def login_get():
+    return render_template("login.html")
+    
+@app.route("/login", methods=['POST'])
+def login_post():
+    email = request.form["email"]
+    password = request.form["password"]
+    user = session.query(User).filter_by(email=email).first()
+    if not user or not check_password_hash(user.password, password):
+        flash("Incorrect username or password", "danger")
+        return redirect(url_for("login_get"))
+        
+    login_user(user)
+    return redirect(request.args.get('next') or url_for("entries"))
+    
+@app.route("/logout", methods=['GET'])
+def logout_get():
+    logout_user()
     return redirect(url_for("entries"))
+        

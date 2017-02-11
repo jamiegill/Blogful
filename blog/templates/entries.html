@@ -2,6 +2,10 @@
 {% extends "base.html" %}
 {% block content %}
 
+<form action="{{ url_for('add_entry_get') }}">
+    <button type="submit" class="button_align">Add New Entry</button>
+</form>
+
 {% for entry in entries %}
 {{ macros.render_entry(entry) }}
 {% endfor %}
