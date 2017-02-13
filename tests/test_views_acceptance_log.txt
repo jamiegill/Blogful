@@ -1,0 +1,223 @@
+ * Running on http://127.0.0.1:8080/ (Press CTRL+C to quit)
+ * Restarting with stat
+EE
+======================================================================
+ERROR: test_login_correct (__main__.TestViews)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/engine/base.py", line 1182, in _execute_context
+    context)
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/engine/default.py", line 470, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.IntegrityError: duplicate key value violates unique constraint "users_email_key"
+DETAIL:  Key (email)=(alice@example.com) already exists.
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "tests/test_views_acceptance.py", line 28, in setUp
+    session.commit()
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/orm/session.py", line 874, in commit
+    self.transaction.commit()
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/orm/session.py", line 461, in commit
+    self._prepare_impl()
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/orm/session.py", line 441, in _prepare_impl
+    self.session.flush()
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/orm/session.py", line 2139, in flush
+    self._flush(objects)
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/orm/session.py", line 2259, in _flush
+    transaction.rollback(_capture_exception=True)
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/util/langhelpers.py", line 60, in __exit__
+    compat.reraise(exc_type, exc_value, exc_tb)
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/util/compat.py", line 187, in reraise
+    raise value
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/orm/session.py", line 2223, in _flush
+    flush_context.execute()
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/orm/unitofwork.py", line 389, in execute
+    rec.execute(self)
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/orm/unitofwork.py", line 548, in execute
+    uow
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/orm/persistence.py", line 181, in save_obj
+    mapper, table, insert)
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/orm/persistence.py", line 835, in _emit_insert_statements
+    execute(statement, params)
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/engine/base.py", line 945, in execute
+    return meth(self, multiparams, params)
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/sql/elements.py", line 263, in _execute_on_connection
+    return connection._execute_clauseelement(self, multiparams, params)
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/engine/base.py", line 1053, in _execute_clauseelement
+    compiled_sql, distilled_params
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/engine/base.py", line 1189, in _execute_context
+    context)
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/engine/base.py", line 1393, in _handle_dbapi_exception
+    exc_info
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/util/compat.py", line 203, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb, cause=cause)
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/util/compat.py", line 186, in reraise
+    raise value.with_traceback(tb)
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/engine/base.py", line 1182, in _execute_context
+    context)
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/engine/default.py", line 470, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.IntegrityError: (psycopg2.IntegrityError) duplicate key value violates unique constraint "users_email_key"
+DETAIL:  Key (email)=(alice@example.com) already exists.
+ [SQL: 'INSERT INTO users (name, email, password) VALUES (%(name)s, %(email)s, %(password)s) RETURNING users.id'] [parameters: {'name': 'Alice', 'email': 'alice@example.com', 'password': 'pbkdf2:sha1:1000$jCzho8g1$663f78efbe4742e0837a25f228bbdd110d787333'}]
+
+======================================================================
+ERROR: test_login_incorrect (__main__.TestViews)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "tests/test_views_acceptance.py", line 28, in setUp
+    session.commit()
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/orm/session.py", line 874, in commit
+    self.transaction.commit()
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/orm/session.py", line 459, in commit
+    self._assert_active(prepared_ok=True)
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/orm/session.py", line 276, in _assert_active
+    % self._rollback_exception
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (psycopg2.IntegrityError) duplicate key value violates unique constraint "users_email_key"
+DETAIL:  Key (email)=(alice@example.com) already exists.
+ [SQL: 'INSERT INTO users (name, email, password) VALUES (%(name)s, %(email)s, %(password)s) RETURNING users.id'] [parameters: {'name': 'Alice', 'email': 'alice@example.com', 'password': 'pbkdf2:sha1:1000$jCzho8g1$663f78efbe4742e0837a25f228bbdd110d787333'}]
+
+----------------------------------------------------------------------
+Ran 2 tests in 2.092s
+
+FAILED (errors=2)
+/usr/lib/python3.4/multiprocessing/process.py:265: ResourceWarning: unclosed <socket.socket fd=9, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8080)>
+  exitcode = 1
+E * Running on http://127.0.0.1:8080/ (Press CTRL+C to quit)
+ * Restarting with stat
+EE
+======================================================================
+ERROR: test_login_correct (__main__.TestViews)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/engine/base.py", line 1182, in _execute_context
+    context)
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/engine/default.py", line 470, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.IntegrityError: duplicate key value violates unique constraint "users_email_key"
+DETAIL:  Key (email)=(alice@example.com) already exists.
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "tests/test_views_acceptance.py", line 28, in setUp
+    session.commit()
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/orm/session.py", line 874, in commit
+    self.transaction.commit()
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/orm/session.py", line 461, in commit
+    self._prepare_impl()
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/orm/session.py", line 441, in _prepare_impl
+    self.session.flush()
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/orm/session.py", line 2139, in flush
+    self._flush(objects)
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/orm/session.py", line 2259, in _flush
+    transaction.rollback(_capture_exception=True)
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/util/langhelpers.py", line 60, in __exit__
+    compat.reraise(exc_type, exc_value, exc_tb)
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/util/compat.py", line 187, in reraise
+    raise value
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/orm/session.py", line 2223, in _flush
+    flush_context.execute()
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/orm/unitofwork.py", line 389, in execute
+    rec.execute(self)
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/orm/unitofwork.py", line 548, in execute
+    uow
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/orm/persistence.py", line 181, in save_obj
+    mapper, table, insert)
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/orm/persistence.py", line 835, in _emit_insert_statements
+    execute(statement, params)
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/engine/base.py", line 945, in execute
+    return meth(self, multiparams, params)
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/sql/elements.py", line 263, in _execute_on_connection
+    return connection._execute_clauseelement(self, multiparams, params)
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/engine/base.py", line 1053, in _execute_clauseelement
+    compiled_sql, distilled_params
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/engine/base.py", line 1189, in _execute_context
+    context)
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/engine/base.py", line 1393, in _handle_dbapi_exception
+    exc_info
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/util/compat.py", line 203, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb, cause=cause)
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/util/compat.py", line 186, in reraise
+    raise value.with_traceback(tb)
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/engine/base.py", line 1182, in _execute_context
+    context)
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/engine/default.py", line 470, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.IntegrityError: (psycopg2.IntegrityError) duplicate key value violates unique constraint "users_email_key"
+DETAIL:  Key (email)=(alice@example.com) already exists.
+ [SQL: 'INSERT INTO users (name, email, password) VALUES (%(name)s, %(email)s, %(password)s) RETURNING users.id'] [parameters: {'name': 'Alice', 'password': 'pbkdf2:sha1:1000$6chlRDjs$a5ad4212a3099f7c981f7203d4d6d5ba4c0e39a4', 'email': 'alice@example.com'}]
+
+======================================================================
+ERROR: test_login_incorrect (__main__.TestViews)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "tests/test_views_acceptance.py", line 28, in setUp
+    session.commit()
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/orm/session.py", line 874, in commit
+    self.transaction.commit()
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/orm/session.py", line 459, in commit
+    self._assert_active(prepared_ok=True)
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/sqlalchemy/orm/session.py", line 276, in _assert_active
+    % self._rollback_exception
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (psycopg2.IntegrityError) duplicate key value violates unique constraint "users_email_key"
+DETAIL:  Key (email)=(alice@example.com) already exists.
+ [SQL: 'INSERT INTO users (name, email, password) VALUES (%(name)s, %(email)s, %(password)s) RETURNING users.id'] [parameters: {'name': 'Alice', 'password': 'pbkdf2:sha1:1000$6chlRDjs$a5ad4212a3099f7c981f7203d4d6d5ba4c0e39a4', 'email': 'alice@example.com'}]
+
+----------------------------------------------------------------------
+Ran 2 tests in 2.078s
+
+FAILED (errors=2)
+/usr/lib/python3.4/multiprocessing/process.py:265: ResourceWarning: unclosed <socket.socket fd=10, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8080)>
+  exitcode = 1
+E
+======================================================================
+ERROR: test_login_correct (__main__.TestViews)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/splinter/element_list.py", line 40, in __getitem__
+    return super(ElementList, self).__getitem__(index)
+IndexError: list index out of range
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "tests/test_views_acceptance.py", line 47, in test_login_correct
+    self.browser.fill("email", "alice@example.com")
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/splinter/driver/webdriver/__init__.py", line 414, in fill
+    field = self.find_by_name(name).first
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/splinter/element_list.py", line 53, in first
+    return self[0]
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/splinter/element_list.py", line 44, in __getitem__
+    self.find_by, self.query))
+splinter.exceptions.ElementDoesNotExist: no elements could be found with name "email"
+
+======================================================================
+ERROR: test_login_incorrect (__main__.TestViews)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/splinter/element_list.py", line 40, in __getitem__
+    return super(ElementList, self).__getitem__(index)
+IndexError: list index out of range
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "tests/test_views_acceptance.py", line 55, in test_login_incorrect
+    self.browser.fill("email", "bob@example.com")
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/splinter/driver/webdriver/__init__.py", line 414, in fill
+    field = self.find_by_name(name).first
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/splinter/element_list.py", line 53, in first
+    return self[0]
+  File "/home/ubuntu/workspace/thinkful/projects/blog/env/lib/python3.4/site-packages/splinter/element_list.py", line 44, in __getitem__
+    self.find_by, self.query))
+splinter.exceptions.ElementDoesNotExist: no elements could be found with name "email"
+
+----------------------------------------------------------------------
+Ran 2 tests in 12.463s
+
+FAILED (errors=2)
