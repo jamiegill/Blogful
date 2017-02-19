@@ -35,7 +35,7 @@ class TestViews(unittest.TestCase):
         
     def tearDown(self):
         """ Test teardown """
-        testmode=True
+        testmode=False
         if testmode == False:
             # Remove the tables and their data from the database
             self.process.terminate()
@@ -49,16 +49,18 @@ class TestViews(unittest.TestCase):
         self.browser.fill("email", "alice@example.com")
         self.browser.fill("password", "test")
         button = self.browser.find_by_css("button[type=submit]")
+        yield
         button.click()
         self.assertEqual(self.browser.url, "http://127.0.0.1:8080/")
         
-#    def test_login_incorrect(self):
-#        self.browser.visit("http://127.0.0.1:8080/login")
-#        self.browser.fill("email", "bob@example.com")
-#        self.browser.fill("password", "test")
-#        button = self.browser.find_by_css("button[type=submit]")
-#        button.click()
-#        self.assertEqual(self.browser.url, "http://127.0.0.1:8080/login")        
+    def test_login_incorrect(self):
+        self.browser.visit("http://127.0.0.1:8080/login")
+        self.browser.fill("email", "bob@example.com")
+        self.browser.fill("password", "test")
+        button = self.browser.find_by_css("button[type=submit]")
+        yield
+        button.click()
+        self.assertEqual(self.browser.url, "http://127.0.0.1:8080/login")        
         
 if __name__ == "__main__":
     unittest.main()
