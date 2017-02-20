@@ -25,6 +25,7 @@ class TestViews(unittest.TestCase):
         session.commit()
         
     def tearDown(self):
+        #return
         """ Test teardown """
         session.close()
         # Remove the tables and their data from the database
@@ -52,6 +53,26 @@ class TestViews(unittest.TestCase):
         self.assertEqual(entry.title, "Test Entry")
         self.assertEqual(entry.content, "Test content")
         self.assertEqual(entry.author, self.user)
+        
+    def test_delete_entry(self):
+        self.simulate_login()
+        self.test_add_entry()
+        session.query(Entry).filter(Entry.id == 1).delete()
+        session.commit()
+        entries = session.query(Entry).all()
+        self.assertEqual(len(entries), 0)
+        
+    def test_edit_entry(self):
+        self.simulate_login()
+        self.test_add_entry()
+        update_record = session.query(Entry).filter_by(id=1).first()
+        update_record.title = "update_title"
+        update_record.content = "update_content"
+        session.commit()
+        entry = session.query(Entry).filter_by(id=1).first()
+        self.assertEqual(entry.title, "update_title")
+        self.assertEqual(entry.content, "update_content")
+        
         
 if __name__ == "__main__":
     unittest.main()
